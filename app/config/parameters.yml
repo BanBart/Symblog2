@@ -2,14 +2,16 @@
 parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
-    database_port: null
-    database_name: symfony
-    database_user: root
-    database_password: null
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
+    database_port: 3306
+    database_name: symblog
+    database_user: symblog
+    database_password: symblog
+    mailer_transport: gmail
+    mailer_encryption: ssl
+    mailer_auth_mode: login
+    mailer_host: smtp.gmail.com
+    mailer_user: angielski2m8@gmail.com
+    mailer_password: jezykangielski
     locale: en
     secret: ThisTokenIsNotSoSecretChangeIt
     debug_toolbar: true

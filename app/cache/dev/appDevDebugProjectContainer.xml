@@ -16,6 +16,7 @@
       <parameter key="AsseticBundle">Symfony\Bundle\AsseticBundle\AsseticBundle</parameter>
       <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
+      <parameter key="BloggerBlogBundle">Blogger\BlogBundle\BloggerBlogBundle</parameter>
       <parameter key="AcmeDemoBundle">Acme\DemoBundle\AcmeDemoBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
@@ -29,15 +30,18 @@
     <parameter key="database_name">symfony</parameter>
     <parameter key="database_user">root</parameter>
     <parameter key="database_password">null</parameter>
-    <parameter key="mailer_transport">smtp</parameter>
-    <parameter key="mailer_host">127.0.0.1</parameter>
-    <parameter key="mailer_user">null</parameter>
-    <parameter key="mailer_password">null</parameter>
+    <parameter key="mailer_transport">gmail</parameter>
+    <parameter key="mailer_encryption">ssl</parameter>
+    <parameter key="mailer_auth_mode">login</parameter>
+    <parameter key="mailer_host">smtp.gmail.com</parameter>
+    <parameter key="mailer_user">angielski2m8@gmail.com</parameter>
+    <parameter key="mailer_password">jezykangielski</parameter>
     <parameter key="locale">en</parameter>
     <parameter key="secret">ThisTokenIsNotSoSecretChangeIt</parameter>
     <parameter key="debug_toolbar">true</parameter>
     <parameter key="debug_redirects">false</parameter>
     <parameter key="use_assetic_controller">true</parameter>
+    <parameter key="blogger_blog.emails.contact_email">sakyhank@gmail.com</parameter>
     <parameter key="controller_resolver.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver</parameter>
     <parameter key="controller_name_converter.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser</parameter>
     <parameter key="response_listener.class">Symfony\Component\HttpKernel\EventListener\ResponseListener</parameter>
@@ -393,12 +397,12 @@
     <parameter key="swiftmailer.data_collector.class">Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector</parameter>
     <parameter key="swiftmailer.mailer.default.transport.name">smtp</parameter>
     <parameter key="swiftmailer.mailer.default.delivery.enabled">true</parameter>
-    <parameter key="swiftmailer.mailer.default.transport.smtp.encryption">null</parameter>
-    <parameter key="swiftmailer.mailer.default.transport.smtp.port">25</parameter>
-    <parameter key="swiftmailer.mailer.default.transport.smtp.host">127.0.0.1</parameter>
-    <parameter key="swiftmailer.mailer.default.transport.smtp.username">null</parameter>
-    <parameter key="swiftmailer.mailer.default.transport.smtp.password">null</parameter>
-    <parameter key="swiftmailer.mailer.default.transport.smtp.auth_mode">null</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.encryption">ssl</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.port">465</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.host">smtp.gmail.com</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.username">angielski2m8@gmail.com</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.password">jezykangielski</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.auth_mode">login</parameter>
     <parameter key="swiftmailer.mailer.default.transport.smtp.timeout">30</parameter>
     <parameter key="swiftmailer.mailer.default.transport.smtp.source_ip">null</parameter>
     <parameter key="swiftmailer.spool.default.memory.path">C:/xampp/htdocs/Symblog/app/cache/dev/swiftmailer/spool/default</parameter>
@@ -438,7 +442,7 @@
     <parameter key="assetic.read_from">C:/xampp/htdocs/Symblog/app/../web</parameter>
     <parameter key="assetic.write_to">C:/xampp/htdocs/Symblog/app/../web</parameter>
     <parameter key="assetic.variables" type="collection"/>
-    <parameter key="assetic.java.bin">/usr/bin/java</parameter>
+    <parameter key="assetic.java.bin">C:\ProgramData\Oracle\Java\javapath\java.EXE</parameter>
     <parameter key="assetic.node.bin">/usr/bin/node</parameter>
     <parameter key="assetic.ruby.bin">/usr/bin/ruby</parameter>
     <parameter key="assetic.sass.bin">/usr/bin/sass</parameter>
@@ -1156,6 +1160,7 @@
               <argument key="reset">form.type.reset</argument>
               <argument key="currency">form.type.currency</argument>
               <argument key="entity">form.type.entity</argument>
+              <argument key="enquiry">blogger_blog.form.enquiry</argument>
             </argument>
             <argument type="collection">
               <argument key="form" type="collection">
@@ -1416,6 +1421,11 @@
       <call method="addXmlMappings">
         <argument type="collection">
           <argument>C:\xampp\htdocs\Symblog\vendor\symfony\symfony\src\Symfony\Component\Form/Resources/config/validation.xml</argument>
+        </argument>
+      </call>
+      <call method="addYamlMappings">
+        <argument type="collection">
+          <argument>C:\xampp\htdocs\Symblog\src\Blogger\BlogBundle\Resources\config\validation.yml</argument>
         </argument>
       </call>
       <call method="enableAnnotationMapping">
@@ -2346,7 +2356,9 @@
       <argument type="service">
         <service class="Doctrine\ORM\Configuration" public="false">
           <call method="setEntityNamespaces">
-            <argument type="collection"/>
+            <argument type="collection">
+              <argument key="BloggerBlogBundle">Blogger\BlogBundle\Entity</argument>
+            </argument>
           </call>
           <call method="setMetadataCacheImpl">
             <argument type="service">
@@ -2377,7 +2389,21 @@
           </call>
           <call method="setMetadataDriverImpl">
             <argument type="service">
-              <service class="Doctrine\ORM\Mapping\Driver\DriverChain" public="false"/>
+              <service class="Doctrine\ORM\Mapping\Driver\DriverChain" public="false">
+                <call method="addDriver">
+                  <argument type="service">
+                    <service class="Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver" public="false">
+                      <argument type="collection">
+                        <argument key="C:\xampp\htdocs\Symblog\src\Blogger\BlogBundle\Resources\config\doctrine">Blogger\BlogBundle\Entity</argument>
+                      </argument>
+                      <call method="setGlobalBasename">
+                        <argument>mapping</argument>
+                      </call>
+                    </service>
+                  </argument>
+                  <argument>Blogger\BlogBundle\Entity</argument>
+                </call>
+              </service>
             </argument>
           </call>
           <call method="setProxyDir">
@@ -2450,6 +2476,9 @@
       </argument>
       <argument type="service" id="security.authentication.trust_resolver" on-invalid="null"/>
       <argument type="service" id="security.role_hierarchy" on-invalid="null"/>
+    </service>
+    <service id="blogger_blog.form.enquiry" class="Blogger\BlogBundle\Form\EnquiryType">
+      <tag name="form.type" alias="enquiry"/>
     </service>
     <service id="twig.extension.acme.demo" class="Acme\DemoBundle\Twig\Extension\DemoExtension" public="false">
       <tag name="twig.extension"/>
@@ -2769,6 +2798,10 @@
         <argument>Doctrine</argument>
       </call>
       <call method="addPath">
+        <argument>C:\xampp\htdocs\Symblog\src\Blogger\BlogBundle/Resources/views</argument>
+        <argument>BloggerBlog</argument>
+      </call>
+      <call method="addPath">
         <argument>C:\xampp\htdocs\Symblog\src\Acme\DemoBundle/Resources/views</argument>
         <argument>AcmeDemo</argument>
       </call>
@@ -2824,26 +2857,26 @@
               <argument type="service" id="b87973bfc3a1d2d5ada6d56896ab3feca91fa2065fd535469cdce5a129d4d3ce_3"/>
             </argument>
             <call method="setUsername">
-              <argument>null</argument>
+              <argument>angielski2m8@gmail.com</argument>
             </call>
             <call method="setPassword">
-              <argument>null</argument>
+              <argument>jezykangielski</argument>
             </call>
             <call method="setAuthMode">
-              <argument>null</argument>
+              <argument>login</argument>
             </call>
           </service>
         </argument>
       </argument>
       <argument type="service" id="swiftmailer.mailer.default.transport.eventdispatcher"/>
       <call method="setHost">
-        <argument>127.0.0.1</argument>
+        <argument>smtp.gmail.com</argument>
       </call>
       <call method="setPort">
-        <argument>25</argument>
+        <argument>465</argument>
       </call>
       <call method="setEncryption">
-        <argument>null</argument>
+        <argument>ssl</argument>
       </call>
       <call method="setTimeout">
         <argument>30</argument>

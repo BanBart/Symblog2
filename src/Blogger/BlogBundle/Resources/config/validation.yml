@@ -1,0 +1,15 @@
+Blogger\BlogBundle\Entity\Enquiry:
+    properties:
+        name: 
+            - NotBlank: ~
+        email:
+            - NotBlank: ~
+            - Email: ~
+        subject:
+            - NotBlank: ~
+            - Length: 
+                max: 50
+        body:
+            - NotBlank: ~
+            - Length: 
+                min: 50

@@ -1,0 +1,26 @@
+Blogger\BlogBundle\Entity\Blog:
+    type: entity
+    table: blog
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        title:
+            type: string
+        author:
+            type: text
+            length: 100
+        blog:
+            type: string
+        image:
+            type: text
+            length: 20
+        tags:
+            type: text
+        created_at:
+            type: datetime
+        updated_at:
+            type: datetime
+            
+        

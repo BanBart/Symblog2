@@ -7,8 +7,6 @@ parameters:
     database_user: symblog
     database_password: symblog
     mailer_transport: gmail
-    mailer_encryption: ssl
-    mailer_auth_mode: login
     mailer_host: smtp.gmail.com
     mailer_user: angielski2m8@gmail.com
     mailer_password: jezykangielski

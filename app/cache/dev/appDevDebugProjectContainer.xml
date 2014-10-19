@@ -17,6 +17,8 @@
       <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
       <parameter key="BloggerBlogBundle">Blogger\BlogBundle\BloggerBlogBundle</parameter>
+      <parameter key="DoctrineFixturesBundle">Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle</parameter>
+      <parameter key="DoctrineMigrationsBundle">Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle</parameter>
       <parameter key="AcmeDemoBundle">Acme\DemoBundle\AcmeDemoBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
@@ -26,13 +28,11 @@
     <parameter key="kernel.container_class">appDevDebugProjectContainer</parameter>
     <parameter key="database_driver">pdo_mysql</parameter>
     <parameter key="database_host">127.0.0.1</parameter>
-    <parameter key="database_port">null</parameter>
-    <parameter key="database_name">symfony</parameter>
-    <parameter key="database_user">root</parameter>
-    <parameter key="database_password">null</parameter>
+    <parameter key="database_port">3306</parameter>
+    <parameter key="database_name">symblog</parameter>
+    <parameter key="database_user">symblog</parameter>
+    <parameter key="database_password">symblog</parameter>
     <parameter key="mailer_transport">gmail</parameter>
-    <parameter key="mailer_encryption">ssl</parameter>
-    <parameter key="mailer_auth_mode">login</parameter>
     <parameter key="mailer_host">smtp.gmail.com</parameter>
     <parameter key="mailer_user">angielski2m8@gmail.com</parameter>
     <parameter key="mailer_password">jezykangielski</parameter>
@@ -173,6 +173,7 @@
     <parameter key="validator.expression.class">Symfony\Component\Validator\Constraints\ExpressionValidator</parameter>
     <parameter key="validator.email.class">Symfony\Component\Validator\Constraints\EmailValidator</parameter>
     <parameter key="validator.translation_domain">validators</parameter>
+    <parameter key="validator.api">3</parameter>
     <parameter key="fragment.listener.class">Symfony\Component\HttpKernel\EventListener\FragmentListener</parameter>
     <parameter key="form.resolved_type_factory.data_collector_proxy.class">Symfony\Component\Form\Extension\DataCollector\Proxy\ResolvedTypeFactoryDataCollectorProxy</parameter>
     <parameter key="form.type_extension.form.data_collector.class">Symfony\Component\Form\Extension\DataCollector\Type\DataCollectorTypeExtension</parameter>
@@ -427,6 +428,7 @@
     <parameter key="assetic.directory_resource.class">Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource</parameter>
     <parameter key="assetic.filter_manager.class">Symfony\Bundle\AsseticBundle\FilterManager</parameter>
     <parameter key="assetic.worker.ensure_filter.class">Assetic\Factory\Worker\EnsureFilterWorker</parameter>
+    <parameter key="assetic.worker.cache_busting.class">Assetic\Factory\Worker\CacheBustingWorker</parameter>
     <parameter key="assetic.value_supplier.class">Symfony\Bundle\AsseticBundle\DefaultValueSupplier</parameter>
     <parameter key="assetic.node.paths" type="collection"/>
     <parameter key="assetic.cache_dir">C:/xampp/htdocs/Symblog/app/cache/dev/assetic</parameter>
@@ -519,6 +521,10 @@
     <parameter key="sensio_framework_extra.converter.doctrine.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
     <parameter key="sensio_framework_extra.converter.datetime.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DateTimeParamConverter</parameter>
     <parameter key="sensio_framework_extra.view.listener.class">Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener</parameter>
+    <parameter key="doctrine_migrations.dir_name">C:/xampp/htdocs/Symblog/app/DoctrineMigrations</parameter>
+    <parameter key="doctrine_migrations.namespace">Application\Migrations</parameter>
+    <parameter key="doctrine_migrations.table_name">migration_versions</parameter>
+    <parameter key="doctrine_migrations.name">Application Migrations</parameter>
     <parameter key="web_profiler.controller.profiler.class">Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController</parameter>
     <parameter key="web_profiler.controller.router.class">Symfony\Bundle\WebProfilerBundle\Controller\RouterController</parameter>
     <parameter key="web_profiler.controller.exception.class">Symfony\Bundle\WebProfilerBundle\Controller\ExceptionController</parameter>
@@ -528,6 +534,10 @@
     <parameter key="web_profiler.debug_toolbar.intercept_redirects">false</parameter>
     <parameter key="web_profiler.debug_toolbar.mode">2</parameter>
     <parameter key="sensio_distribution.webconfigurator.class">Sensio\Bundle\DistributionBundle\Configurator\Configurator</parameter>
+    <parameter key="sensio_distribution.webconfigurator.doctrine_step.class">Sensio\Bundle\DistributionBundle\Configurator\Step\DoctrineStep</parameter>
+    <parameter key="sensio_distribution.webconfigurator.secret_step.class">Sensio\Bundle\DistributionBundle\Configurator\Step\SecretStep</parameter>
+    <parameter key="sensio_distribution.security_checker.class">SensioLabs\Security\SecurityChecker</parameter>
+    <parameter key="sensio_distribution.security_checker.command.class">SensioLabs\Security\Command\SecurityCheckerCommand</parameter>
     <parameter key="data_collector.templates" type="collection">
       <parameter key="data_collector.config" type="collection">
         <parameter>config</parameter>
@@ -578,7 +588,9 @@
         <parameter>DoctrineBundle:Collector:db</parameter>
       </parameter>
     </parameter>
-    <parameter key="console.command.ids" type="collection"/>
+    <parameter key="console.command.ids" type="collection">
+      <parameter>sensio_distribution.security_checker.command</parameter>
+    </parameter>
   </parameters>
   <services>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
@@ -702,6 +714,7 @@
       <tag name="kernel.fragment_renderer"/>
       <argument>null</argument>
       <argument type="service" id="fragment.renderer.inline"/>
+      <argument type="service" id="uri_signer"/>
       <call method="setFragmentPath">
         <argument>/_fragment</argument>
       </call>
@@ -948,6 +961,22 @@
         <argument>0</argument>
       </call>
       <call method="addListenerService">
+        <argument>console.command</argument>
+        <argument type="collection">
+          <argument>monolog.handler.console</argument>
+          <argument>onCommand</argument>
+        </argument>
+        <argument>255</argument>
+      </call>
+      <call method="addListenerService">
+        <argument>console.terminate</argument>
+        <argument type="collection">
+          <argument>monolog.handler.console</argument>
+          <argument>onTerminate</argument>
+        </argument>
+        <argument>-255</argument>
+      </call>
+      <call method="addListenerService">
         <argument>kernel.request</argument>
         <argument type="collection">
           <argument>assetic.request_listener</argument>
@@ -1022,10 +1051,6 @@
       <call method="addSubscriberService">
         <argument>twig.exception_listener</argument>
         <argument>Symfony\Component\HttpKernel\EventListener\ExceptionListener</argument>
-      </call>
-      <call method="addSubscriberService">
-        <argument>monolog.handler.console</argument>
-        <argument>Symfony\Bridge\Monolog\Handler\ConsoleHandler</argument>
       </call>
       <call method="addSubscriberService">
         <argument>swiftmailer.email_sender.listener</argument>
@@ -1120,7 +1145,9 @@
       <argument type="service" id="monolog.logger.security" on-invalid="ignore"/>
     </service>
     <service id="form.resolved_type_factory" class="Symfony\Component\Form\Extension\DataCollector\Proxy\ResolvedTypeFactoryDataCollectorProxy">
-      <argument type="service" id="236c4df969e6cdd81701df22c4a4687701dc4d96dfdc7f410cb21be60ce42eb5_1"/>
+      <argument type="service">
+        <service class="Symfony\Component\Form\ResolvedFormTypeFactory" public="false"/>
+      </argument>
       <argument type="service" id="data_collector.form"/>
     </service>
     <service id="form.registry" class="Symfony\Component\Form\FormRegistry">
@@ -1398,7 +1425,7 @@
       <argument type="service" id="service_container"/>
     </service>
     <service id="validator" class="Symfony\Component\Validator\ValidatorInterface" factory-method="getValidator" factory-service="validator.builder"/>
-    <service id="validator.builder" class="Symfony\Component\Validator\ValidatorBuilderInterface" factory-method="createValidatorBuilder">
+    <service id="validator.builder" class="Symfony\Component\Validator\ValidatorBuilderInterface" factory-method="createValidatorBuilder" factory-class="%validator.builder.factory.class%">
       <call method="setConstraintValidatorFactory">
         <argument type="service">
           <service class="Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory" public="false">
@@ -1434,6 +1461,9 @@
       <call method="addMethodMapping">
         <argument>loadValidatorMetadata</argument>
       </call>
+      <call method="setApiVersion">
+        <argument>3</argument>
+      </call>
       <call method="addObjectInitializers">
         <argument type="collection">
           <argument type="service" id="doctrine.orm.validator_initializer"/>
@@ -1453,7 +1483,6 @@
       <argument type="service" id="uri_signer"/>
       <argument>/_fragment</argument>
     </service>
-    <service id="236c4df969e6cdd81701df22c4a4687701dc4d96dfdc7f410cb21be60ce42eb5_1" class="Symfony\Component\Form\ResolvedFormTypeFactory"/>
     <service id="form.type_extension.form.data_collector" class="Symfony\Component\Form\Extension\DataCollector\Type\DataCollectorTypeExtension">
       <tag name="form.type_extension" alias="form"/>
       <argument type="service" id="data_collector.form"/>
@@ -1613,6 +1642,7 @@
               <service class="Symfony\Bundle\AsseticBundle\Routing\AsseticLoader" public="false">
                 <tag name="routing.loader"/>
                 <argument type="service" id="assetic.asset_manager"/>
+                <argument type="collection"/>
               </service>
             </argument>
           </call>
@@ -2035,7 +2065,7 @@
           <service class="Symfony\Bundle\TwigBundle\Extension\AssetsExtension" public="false">
             <tag name="twig.extension"/>
             <argument type="service" id="service_container"/>
-            <argument type="service" id="router.request_context"/>
+            <argument type="service" id="router.request_context" on-invalid="null"/>
           </service>
         </argument>
       </call>
@@ -2131,7 +2161,11 @@
             <argument>true</argument>
             <argument type="collection"/>
             <argument type="collection"/>
-            <argument type="service" id="assetic.value_supplier.default" on-invalid="null"/>
+            <argument type="service">
+              <service class="Symfony\Bundle\AsseticBundle\DefaultValueSupplier" public="false">
+                <argument type="service" id="service_container"/>
+              </service>
+            </argument>
           </service>
         </argument>
       </call>
@@ -2177,14 +2211,12 @@
       <argument>true</argument>
     </service>
     <service id="monolog.handler.console" class="Symfony\Bridge\Monolog\Handler\ConsoleHandler">
-      <tag name="kernel.event_subscriber"/>
+      <tag name="kernel.event_listener" event="console.command" method="onCommand" priority="255"/>
+      <tag name="kernel.event_listener" event="console.terminate" method="onTerminate" priority="-255"/>
       <argument>null</argument>
       <argument>false</argument>
       <argument type="collection"/>
     </service>
-    <service id="b87973bfc3a1d2d5ada6d56896ab3feca91fa2065fd535469cdce5a129d4d3ce_3" class="Swift_Transport_Esmtp_Auth_PlainAuthenticator"/>
-    <service id="b87973bfc3a1d2d5ada6d56896ab3feca91fa2065fd535469cdce5a129d4d3ce_2" class="Swift_Transport_Esmtp_Auth_LoginAuthenticator"/>
-    <service id="b87973bfc3a1d2d5ada6d56896ab3feca91fa2065fd535469cdce5a129d4d3ce_1" class="Swift_Transport_Esmtp_Auth_CramMd5Authenticator"/>
     <service id="swiftmailer.email_sender.listener" class="Symfony\Bundle\SwiftmailerBundle\EventListener\EmailSenderListener">
       <tag name="kernel.event_subscriber"/>
       <argument type="service" id="service_container"/>
@@ -2212,7 +2244,9 @@
             <argument type="service">
               <service class="Assetic\Extension\Twig\TwigFormulaLoader" public="false">
                 <tag name="assetic.templating.twig"/>
+                <tag name="monolog.logger" channel="assetic"/>
                 <argument type="service" id="twig"/>
+                <argument type="service" id="monolog.logger.assetic" on-invalid="ignore"/>
               </service>
             </argument>
             <argument type="service">
@@ -2254,9 +2288,6 @@
         </argument>
       </call>
     </service>
-    <service id="assetic.value_supplier.default" class="Symfony\Bundle\AsseticBundle\DefaultValueSupplier" public="false">
-      <argument type="service" id="service_container"/>
-    </service>
     <service id="assetic.filter.cssrewrite" class="Assetic\Filter\CssRewriteFilter">
       <tag name="assetic.filter" alias="cssrewrite"/>
     </service>
@@ -2266,9 +2297,6 @@
       <argument type="service" id="assetic.cache"/>
       <argument>false</argument>
       <argument type="service" id="profiler" on-invalid="null"/>
-      <call method="setValueSupplier">
-        <argument type="service" id="assetic.value_supplier.default" on-invalid="ignore"/>
-      </call>
     </service>
     <service id="assetic.cache" class="Assetic\Cache\FilesystemCache" public="false">
       <argument>C:/xampp/htdocs/Symblog/app/cache/dev/assetic/assets</argument>
@@ -2295,10 +2323,10 @@
       <argument type="collection">
         <argument key="driver">pdo_mysql</argument>
         <argument key="host">127.0.0.1</argument>
-        <argument key="port">null</argument>
-        <argument key="dbname">symfony</argument>
-        <argument key="user">root</argument>
-        <argument key="password">null</argument>
+        <argument key="port">3306</argument>
+        <argument key="dbname">symblog</argument>
+        <argument key="user">symblog</argument>
+        <argument key="password">symblog</argument>
         <argument key="charset">UTF8</argument>
         <argument key="driverOptions" type="collection"/>
       </argument>
@@ -2351,7 +2379,7 @@
       <argument type="collection"/>
       <argument type="collection"/>
     </service>
-    <service id="doctrine.orm.default_entity_manager" class="Doctrine\ORM\EntityManager" factory-method="create">
+    <service id="doctrine.orm.default_entity_manager" class="Doctrine\ORM\EntityManager" factory-method="create" factory-class="%doctrine.orm.entity_manager.class%">
       <argument type="service" id="doctrine.dbal.default_connection"/>
       <argument type="service">
         <service class="Doctrine\ORM\Configuration" public="false">
@@ -2564,6 +2592,27 @@
     </service>
     <service id="sensio_distribution.webconfigurator" class="Sensio\Bundle\DistributionBundle\Configurator\Configurator">
       <argument>C:/xampp/htdocs/Symblog/app</argument>
+      <call method="addStep">
+        <argument type="service">
+          <service class="Sensio\Bundle\DistributionBundle\Configurator\Step\DoctrineStep" public="false">
+            <tag name="webconfigurator.step" priority="10"/>
+          </service>
+        </argument>
+        <argument>10</argument>
+      </call>
+      <call method="addStep">
+        <argument type="service">
+          <service class="Sensio\Bundle\DistributionBundle\Configurator\Step\SecretStep" public="false">
+            <tag name="webconfigurator.step"/>
+          </service>
+        </argument>
+        <argument>0</argument>
+      </call>
+    </service>
+    <service id="sensio_distribution.security_checker" class="SensioLabs\Security\SecurityChecker"/>
+    <service id="sensio_distribution.security_checker.command" class="SensioLabs\Security\Command\SecurityCheckerCommand">
+      <tag name="console.command"/>
+      <argument type="service" id="sensio_distribution.security_checker"/>
     </service>
     <service id="monolog.logger.request" class="Symfony\Bridge\Monolog\Logger">
       <argument>request</argument>
@@ -2673,6 +2722,18 @@
         <argument type="service" id="monolog.handler.debug"/>
       </call>
     </service>
+    <service id="monolog.logger.assetic" class="Symfony\Bridge\Monolog\Logger">
+      <argument>assetic</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.console"/>
+      </call>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.debug"/>
+      </call>
+    </service>
     <service id="monolog.logger.doctrine" class="Symfony\Bridge\Monolog\Logger">
       <argument>doctrine</argument>
       <call method="pushHandler">
@@ -2752,6 +2813,7 @@
         <argument key="matcher_dumper_class">Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper</argument>
         <argument key="matcher_cache_class">appDevUrlMatcher</argument>
         <argument key="strict_requirements">true</argument>
+        <argument key="resource_type">yaml</argument>
       </argument>
       <argument type="service" id="router.request_context" on-invalid="ignore"/>
       <argument type="service" id="monolog.logger.router" on-invalid="ignore"/>
@@ -2852,9 +2914,15 @@
         <argument type="service">
           <service class="Swift_Transport_Esmtp_AuthHandler" public="false">
             <argument type="collection">
-              <argument type="service" id="b87973bfc3a1d2d5ada6d56896ab3feca91fa2065fd535469cdce5a129d4d3ce_1"/>
-              <argument type="service" id="b87973bfc3a1d2d5ada6d56896ab3feca91fa2065fd535469cdce5a129d4d3ce_2"/>
-              <argument type="service" id="b87973bfc3a1d2d5ada6d56896ab3feca91fa2065fd535469cdce5a129d4d3ce_3"/>
+              <argument type="service">
+                <service class="Swift_Transport_Esmtp_Auth_CramMd5Authenticator" public="false"/>
+              </argument>
+              <argument type="service">
+                <service class="Swift_Transport_Esmtp_Auth_LoginAuthenticator" public="false"/>
+              </argument>
+              <argument type="service">
+                <service class="Swift_Transport_Esmtp_Auth_PlainAuthenticator" public="false"/>
+              </argument>
             </argument>
             <call method="setUsername">
               <argument>angielski2m8@gmail.com</argument>
@@ -2897,5 +2965,6 @@
     <service id="database_connection" alias="doctrine.dbal.default_connection"/>
     <service id="doctrine.orm.entity_manager" alias="doctrine.orm.default_entity_manager"/>
     <service id="sensio.distribution.webconfigurator" alias="sensio_distribution.webconfigurator"/>
+    <service id="console.command.sensiolabs_security_command_securitycheckercommand" alias="sensio_distribution.security_checker.command"/>
   </services>
 </container>

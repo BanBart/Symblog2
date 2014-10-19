@@ -49,7 +49,13 @@ class Blog
      */
     private $updated_at;
 
-    private $comments = array();
+    private $comments;
+    
+    public function __construct(){
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+  
     /**
      * Get id
      *
@@ -124,9 +130,12 @@ class Blog
      *
      * @return string 
      */
-    public function getBlog()
+    public function getBlog($length = null)
     {
-        return $this->blog;
+        if(false === is_null($length) && $length>0){
+            return substr($this->blog,0,$length);
+        }
+        else return $this->blog;
     }
 
     /**
@@ -227,5 +236,44 @@ class Blog
     
     public function setComments(Comment $comment){
         $this->comments[] = $comment;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->setCreatedAt(new \DateTime());
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->setUpdatedAt(new \DateTime());
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Blogger\BlogBundle\Entity\Comment $comments
+     * @return Blog
+     */
+    public function addComment(\Blogger\BlogBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Blogger\BlogBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Blogger\BlogBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
     }
 }

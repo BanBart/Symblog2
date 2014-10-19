@@ -1,10 +1,12 @@
 Blogger\BlogBundle\Entity\Blog:
     type: entity
+    repositoryClass: Blogger\BlogBundle\Repository\BlogRepository
     table: blog
     id:
         id:
             type: integer
             generator: { strategy: AUTO }
+            
     fields:
         title:
             type: string
@@ -23,4 +25,13 @@ Blogger\BlogBundle\Entity\Blog:
         updated_at:
             type: datetime
             
+    oneToMany:
+        comments:
+            targetEntity: Comment
+            mappedBy: blog
+            
+            
+    lifecycleCallbacks:
+        prePersist: [setCreatedAtValue]
+        preUpdate: [setUpdatedAtValue]
         

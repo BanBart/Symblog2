@@ -19,8 +19,16 @@ use Symfony\Component\HttpFoundation\Request;
  * @author SakyHank
  */
 class PageController extends Controller {
+    
     public function indexAction(){
-        return $this->render('BloggerBlogBundle:Page:index.html.twig');
+        
+        $em= $this->getDoctrine()->getManager();
+        $blog= $em->getRepository('BloggerBlogBundle:Blog')->getLatestBlogs();
+                
+        
+        return $this->render('BloggerBlogBundle:Page:index.html.twig', array(
+            'blogs'=>$blog
+        ));
     }
     
     public function aboutAction(){

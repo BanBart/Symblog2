@@ -4,6 +4,8 @@ namespace Blogger\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Blogger\BlogBundle\Utils\Symblog;
+
 /**
  * Blog
  */
@@ -53,6 +55,10 @@ class Blog
     
     public function __construct(){
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    public function __toString(){
+        return $this->getTitle();
     }
     
   
@@ -275,5 +281,45 @@ class Blog
     public function removeComment(\Blogger\BlogBundle\Entity\Comment $comments)
     {
         $this->comments->removeElement($comments);
+    }
+    /**
+     * @var string
+     */
+    private $slug;
+
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Blog
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+    
+    
+    
+    
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setSlugValue()
+    {
+        $this->setSlug(Symblog::slugify($this->getTitle()));
     }
 }

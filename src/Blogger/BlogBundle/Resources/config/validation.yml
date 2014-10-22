@@ -13,3 +13,9 @@ Blogger\BlogBundle\Entity\Enquiry:
             - NotBlank: ~
             - Length: 
                 min: 50
+Blogger\BlogBundle\Entity\Comment:
+    properties:
+        username:
+            - NotBlank: ~
+        comment:
+            - NotBlank: ~

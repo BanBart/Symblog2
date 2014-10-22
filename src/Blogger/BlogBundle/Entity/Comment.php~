@@ -17,7 +17,7 @@ class Comment
     /**
      * @var string
      */
-    private $user;
+    private $username;
 
     /**
      * @var string
@@ -62,7 +62,7 @@ class Comment
      */
     public function setUser($user)
     {
-        $this->user = $user;
+        $this->username = $user;
 
         return $this;
     }
@@ -74,7 +74,7 @@ class Comment
      */
     public function getUser()
     {
-        return $this->user;
+        return $this->username;
     }
 
     /**
@@ -211,5 +211,28 @@ class Comment
     public function getBlog()
     {
         return $this->blog;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     * @return Comment
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string 
+     */
+    public function getUsername()
+    {
+        return $this->username;
     }
 }

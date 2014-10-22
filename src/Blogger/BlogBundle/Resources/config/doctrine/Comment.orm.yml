@@ -7,7 +7,7 @@ Blogger\BlogBundle\Entity\Comment:
             type: integer
             generator: { strategy: AUTO }
     fields:
-        user:
+        username:
             type: string
         comment:
             type: text

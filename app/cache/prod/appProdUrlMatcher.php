@@ -65,6 +65,28 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
             }
             not_BloggerBlogBundle_contact:
 
+            // BloggerBlogBundle_blog_show
+            if (preg_match('#^/blogger/(?P<id>\\d+)/(?P<slug>[^/]++)$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_BloggerBlogBundle_blog_show;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'BloggerBlogBundle_blog_show')), array (  '_controller' => 'Blogger\\BlogBundle\\Controller\\BlogController::showAction',));
+            }
+            not_BloggerBlogBundle_blog_show:
+
+            // BloggerBlogBundle_comment_create
+            if (0 === strpos($pathinfo, '/blogger/comment') && preg_match('#^/blogger/comment/(?P<blog_id>[^/]++)$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('POST', 'GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('POST', 'GET', 'HEAD'));
+                    goto not_BloggerBlogBundle_comment_create;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'BloggerBlogBundle_comment_create')), array (  '_controller' => 'Blogger\\BlogBundle\\Controller\\CommentController::createAction',));
+            }
+            not_BloggerBlogBundle_comment_create:
+
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

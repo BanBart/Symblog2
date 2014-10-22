@@ -27,6 +27,48 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         $context = $this->context;
         $request = $this->request;
 
+        if (0 === strpos($pathinfo, '/css')) {
+            if (0 === strpos($pathinfo, '/css/blogger')) {
+                // _assetic_4ce5d7f
+                if ($pathinfo === '/css/blogger.css') {
+                    return array (  '_controller' => 'assetic.controller:render',  'name' => '4ce5d7f',  'pos' => NULL,  '_format' => 'css',  '_route' => '_assetic_4ce5d7f',);
+                }
+
+                if (0 === strpos($pathinfo, '/css/blogger_part_1_')) {
+                    // _assetic_4ce5d7f_0
+                    if ($pathinfo === '/css/blogger_part_1_blog_1.css') {
+                        return array (  '_controller' => 'assetic.controller:render',  'name' => '4ce5d7f',  'pos' => 0,  '_format' => 'css',  '_route' => '_assetic_4ce5d7f_0',);
+                    }
+
+                    if (0 === strpos($pathinfo, '/css/blogger_part_1_s')) {
+                        // _assetic_4ce5d7f_1
+                        if ($pathinfo === '/css/blogger_part_1_screen_2.css') {
+                            return array (  '_controller' => 'assetic.controller:render',  'name' => '4ce5d7f',  'pos' => 1,  '_format' => 'css',  '_route' => '_assetic_4ce5d7f_1',);
+                        }
+
+                        // _assetic_4ce5d7f_2
+                        if ($pathinfo === '/css/blogger_part_1_sidebar_3.css') {
+                            return array (  '_controller' => 'assetic.controller:render',  'name' => '4ce5d7f',  'pos' => 2,  '_format' => 'css',  '_route' => '_assetic_4ce5d7f_2',);
+                        }
+
+                    }
+
+                }
+
+            }
+
+            // _assetic_51c56cc
+            if ($pathinfo === '/css/51c56cc.css') {
+                return array (  '_controller' => 'assetic.controller:render',  'name' => '51c56cc',  'pos' => NULL,  '_format' => 'css',  '_route' => '_assetic_51c56cc',);
+            }
+
+        }
+
+        // _assetic_3c62cfd
+        if ($pathinfo === '/js/3c62cfd.js') {
+            return array (  '_controller' => 'assetic.controller:render',  'name' => '3c62cfd',  'pos' => NULL,  '_format' => 'js',  '_route' => '_assetic_3c62cfd',);
+        }
+
         if (0 === strpos($pathinfo, '/_')) {
             // _wdt
             if (0 === strpos($pathinfo, '/_wdt') && preg_match('#^/_wdt/(?P<token>[^/]++)$#s', $pathinfo, $matches)) {
@@ -161,7 +203,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             not_BloggerBlogBundle_contact:
 
             // BloggerBlogBundle_blog_show
-            if (preg_match('#^/blogger/(?P<id>\\d+)$#s', $pathinfo, $matches)) {
+            if (preg_match('#^/blogger/(?P<id>\\d+)/(?P<slug>[^/]++)$#s', $pathinfo, $matches)) {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                     $allow = array_merge($allow, array('GET', 'HEAD'));
                     goto not_BloggerBlogBundle_blog_show;
@@ -170,6 +212,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'BloggerBlogBundle_blog_show')), array (  '_controller' => 'Blogger\\BlogBundle\\Controller\\BlogController::showAction',));
             }
             not_BloggerBlogBundle_blog_show:
+
+            // BloggerBlogBundle_comment_create
+            if (0 === strpos($pathinfo, '/blogger/comment') && preg_match('#^/blogger/comment/(?P<blog_id>[^/]++)$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('POST', 'GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('POST', 'GET', 'HEAD'));
+                    goto not_BloggerBlogBundle_comment_create;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'BloggerBlogBundle_comment_create')), array (  '_controller' => 'Blogger\\BlogBundle\\Controller\\CommentController::createAction',));
+            }
+            not_BloggerBlogBundle_comment_create:
 
         }
 

@@ -19,7 +19,6 @@
       <parameter key="BloggerBlogBundle">Blogger\BlogBundle\BloggerBlogBundle</parameter>
       <parameter key="DoctrineFixturesBundle">Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle</parameter>
       <parameter key="DoctrineMigrationsBundle">Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle</parameter>
-      <parameter key="AcmeDemoBundle">Acme\DemoBundle\AcmeDemoBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
       <parameter key="SensioGeneratorBundle">Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle</parameter>
@@ -42,6 +41,7 @@
     <parameter key="debug_redirects">false</parameter>
     <parameter key="use_assetic_controller">true</parameter>
     <parameter key="blogger_blog.emails.contact_email">sakyhank@gmail.com</parameter>
+    <parameter key="blogger_blog.comments.latest_comment_limit">10</parameter>
     <parameter key="controller_resolver.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver</parameter>
     <parameter key="controller_name_converter.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser</parameter>
     <parameter key="response_listener.class">Symfony\Component\HttpKernel\EventListener\ResponseListener</parameter>
@@ -432,7 +432,9 @@
     <parameter key="assetic.value_supplier.class">Symfony\Bundle\AsseticBundle\DefaultValueSupplier</parameter>
     <parameter key="assetic.node.paths" type="collection"/>
     <parameter key="assetic.cache_dir">C:/xampp/htdocs/Symblog/app/cache/dev/assetic</parameter>
-    <parameter key="assetic.bundles" type="collection"/>
+    <parameter key="assetic.bundles" type="collection">
+      <parameter>BloggerBlogBundle</parameter>
+    </parameter>
     <parameter key="assetic.twig_extension.class">Symfony\Bundle\AsseticBundle\Twig\AsseticExtension</parameter>
     <parameter key="assetic.twig_formula_loader.class">Assetic\Extension\Twig\TwigFormulaLoader</parameter>
     <parameter key="assetic.helper.dynamic.class">Symfony\Bundle\AsseticBundle\Templating\DynamicAsseticHelper</parameter>
@@ -444,7 +446,7 @@
     <parameter key="assetic.read_from">C:/xampp/htdocs/Symblog/app/../web</parameter>
     <parameter key="assetic.write_to">C:/xampp/htdocs/Symblog/app/../web</parameter>
     <parameter key="assetic.variables" type="collection"/>
-    <parameter key="assetic.java.bin">C:\ProgramData\Oracle\Java\javapath\java.EXE</parameter>
+    <parameter key="assetic.java.bin">C:\Windows\system32\java.EXE</parameter>
     <parameter key="assetic.node.bin">/usr/bin/node</parameter>
     <parameter key="assetic.ruby.bin">/usr/bin/ruby</parameter>
     <parameter key="assetic.sass.bin">/usr/bin/sass</parameter>
@@ -981,14 +983,6 @@
         <argument type="collection">
           <argument>assetic.request_listener</argument>
           <argument>onKernelRequest</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListenerService">
-        <argument>kernel.controller</argument>
-        <argument type="collection">
-          <argument>acme.demo.listener</argument>
-          <argument>onKernelController</argument>
         </argument>
         <argument>0</argument>
       </call>
@@ -2160,7 +2154,9 @@
             <argument type="service" id="templating.name_parser"/>
             <argument>true</argument>
             <argument type="collection"/>
-            <argument type="collection"/>
+            <argument type="collection">
+              <argument>BloggerBlogBundle</argument>
+            </argument>
             <argument type="service">
               <service class="Symfony\Bundle\AsseticBundle\DefaultValueSupplier" public="false">
                 <argument type="service" id="service_container"/>
@@ -2177,7 +2173,7 @@
         </argument>
       </call>
       <call method="addExtension">
-        <argument type="service" id="twig.extension.acme.demo"/>
+        <argument type="service" id="blogger_blog.twig.extension"/>
       </call>
       <call method="addExtension">
         <argument type="service">
@@ -2258,6 +2254,33 @@
           </service>
         </argument>
       </argument>
+      <call method="addResource">
+        <argument type="service">
+          <service class="Symfony\Bundle\AsseticBundle\Factory\Resource\CoalescingDirectoryResource" public="false">
+            <tag name="assetic.templating.twig"/>
+            <tag name="assetic.formula_resource" loader="twig"/>
+            <argument type="collection">
+              <argument type="service">
+                <service class="%assetic.directory_resource.class%" public="false">
+                  <argument type="service" id="templating.loader"/>
+                  <argument>BloggerBlogBundle</argument>
+                  <argument>C:/xampp/htdocs/Symblog/app/Resources/BloggerBlogBundle/views</argument>
+                  <argument>/\.[^.]+\.twig$/</argument>
+                </service>
+              </argument>
+              <argument type="service">
+                <service class="%assetic.directory_resource.class%" public="false">
+                  <argument type="service" id="templating.loader"/>
+                  <argument>BloggerBlogBundle</argument>
+                  <argument>C:\xampp\htdocs\Symblog\src\Blogger\BlogBundle/Resources/views</argument>
+                  <argument>/\.[^.]+\.twig$/</argument>
+                </service>
+              </argument>
+            </argument>
+          </service>
+        </argument>
+        <argument>twig</argument>
+      </call>
       <call method="addResource">
         <argument type="service">
           <service class="Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource" public="false">
@@ -2508,13 +2531,8 @@
     <service id="blogger_blog.form.enquiry" class="Blogger\BlogBundle\Form\EnquiryType">
       <tag name="form.type" alias="enquiry"/>
     </service>
-    <service id="twig.extension.acme.demo" class="Acme\DemoBundle\Twig\Extension\DemoExtension" public="false">
+    <service id="blogger_blog.twig.extension" class="Blogger\BlogBundle\Twig\Extensions\BloggerBlogExtension">
       <tag name="twig.extension"/>
-      <argument type="service" id="twig.loader"/>
-    </service>
-    <service id="acme.demo.listener" class="Acme\DemoBundle\EventListener\ControllerListener">
-      <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController"/>
-      <argument type="service" id="twig.extension.acme.demo"/>
     </service>
     <service id="web_profiler.controller.profiler" class="Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController">
       <argument type="service" id="router" on-invalid="null"/>
@@ -2862,10 +2880,6 @@
       <call method="addPath">
         <argument>C:\xampp\htdocs\Symblog\src\Blogger\BlogBundle/Resources/views</argument>
         <argument>BloggerBlog</argument>
-      </call>
-      <call method="addPath">
-        <argument>C:\xampp\htdocs\Symblog\src\Acme\DemoBundle/Resources/views</argument>
-        <argument>AcmeDemo</argument>
       </call>
       <call method="addPath">
         <argument>C:\xampp\htdocs\Symblog\vendor\symfony\symfony\src\Symfony\Bundle\WebProfilerBundle/Resources/views</argument>

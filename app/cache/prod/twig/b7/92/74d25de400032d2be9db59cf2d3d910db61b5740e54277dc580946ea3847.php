@@ -16,24 +16,24 @@ class __TwigTemplate_b79274d25de400032d2be9db59cf2d3d910db61b5740e54277dc580946e
     protected function doDisplay(array $context, array $blocks = array())
     {
         // line 1
-        if ($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "function")) {
+        if ($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "function", array())) {
             // line 2
             echo "    at
     <strong>
         <abbr title=\"";
             // line 4
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "class"), "html", null, true);
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "class", array()), "html", null, true);
             echo "\">";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "short_class"), "html", null, true);
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "short_class", array()), "html", null, true);
             echo "</abbr>
         ";
             // line 5
-            echo twig_escape_filter($this->env, ($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "type") . $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "function")), "html", null, true);
+            echo twig_escape_filter($this->env, ($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "type", array()) . $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "function", array())), "html", null, true);
             echo "
     </strong>
     (";
             // line 7
-            echo $this->env->getExtension('code')->formatArgs($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "args"));
+            echo $this->env->getExtension('code')->formatArgs($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "args", array()));
             echo ")
 ";
         }
@@ -41,14 +41,14 @@ class __TwigTemplate_b79274d25de400032d2be9db59cf2d3d910db61b5740e54277dc580946e
         echo "
 ";
         // line 10
-        if (((($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "file", array(), "any", true, true) && $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "file")) && $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "line", array(), "any", true, true)) && $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "line"))) {
+        if (((($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "file", array(), "any", true, true) && $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "file", array())) && $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "line", array(), "any", true, true)) && $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "line", array()))) {
             // line 11
             echo "    ";
-            echo (($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "function")) ? ("<br />") : (""));
+            echo (($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "function", array())) ? ("<br />") : (""));
             echo "
     in ";
             // line 12
-            echo $this->env->getExtension('code')->formatFile($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "file"), $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "line"));
+            echo $this->env->getExtension('code')->formatFile($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "file", array()), $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "line", array()));
             echo "&nbsp;
     ";
             // line 13
@@ -84,7 +84,7 @@ class __TwigTemplate_b79274d25de400032d2be9db59cf2d3d910db61b5740e54277dc580946e
             echo "\" class=\"trace\">
         ";
             // line 20
-            echo $this->env->getExtension('code')->fileExcerpt($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "file"), $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "line"));
+            echo $this->env->getExtension('code')->fileExcerpt($this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "file", array()), $this->getAttribute((isset($context["trace"]) ? $context["trace"] : null), "line", array()));
             echo "
     </div>
 ";
@@ -103,6 +103,6 @@ class __TwigTemplate_b79274d25de400032d2be9db59cf2d3d910db61b5740e54277dc580946e
 
     public function getDebugInfo()
     {
-        return array (  87 => 20,  72 => 16,  55 => 13,  21 => 2,  26 => 3,  98 => 40,  93 => 9,  88 => 6,  78 => 40,  46 => 11,  27 => 4,  40 => 8,  44 => 10,  35 => 4,  31 => 5,  43 => 8,  41 => 9,  28 => 3,  201 => 92,  196 => 90,  183 => 82,  171 => 73,  166 => 71,  163 => 70,  158 => 67,  156 => 66,  151 => 63,  142 => 59,  138 => 57,  136 => 56,  123 => 47,  121 => 46,  117 => 44,  115 => 43,  105 => 40,  101 => 39,  91 => 31,  69 => 25,  66 => 15,  62 => 23,  49 => 19,  24 => 2,  32 => 6,  25 => 4,  22 => 2,  19 => 1,  209 => 82,  203 => 78,  199 => 91,  193 => 73,  189 => 71,  187 => 84,  182 => 68,  176 => 64,  173 => 74,  168 => 72,  164 => 60,  162 => 59,  154 => 54,  149 => 51,  147 => 50,  144 => 49,  141 => 48,  133 => 55,  130 => 41,  125 => 38,  122 => 37,  116 => 36,  112 => 42,  109 => 34,  106 => 33,  103 => 32,  99 => 30,  95 => 28,  92 => 27,  86 => 28,  82 => 22,  80 => 19,  73 => 19,  64 => 15,  60 => 13,  57 => 14,  54 => 11,  51 => 12,  48 => 9,  45 => 8,  42 => 6,  39 => 16,  36 => 7,  33 => 4,  30 => 3,);
+        return array (  87 => 20,  80 => 19,  72 => 16,  66 => 15,  57 => 14,  55 => 13,  51 => 12,  46 => 11,  44 => 10,  41 => 9,  36 => 7,  31 => 5,  25 => 4,  21 => 2,  19 => 1,);
     }
 }

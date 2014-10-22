@@ -1,11 +1,2 @@
-04fd51,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/,1413718051,
-83b205,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/37,1413718062,
-df7b7e,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/,1413719479,
-6c61aa,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/37,1413719484,5ba8b2
-5ba8b2,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/37,1413719484,
-a78144,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/37,1413719583,ed610e
-ed610e,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/37,1413719583,
-7ba99d,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/37,1413719658,a28945
-a28945,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/37,1413719658,
-233162,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/37,1413719721,
-d78ffd,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/37,1413719762,
+455753,127.0.0.1,GET,http://symblog.local/app_dev.php/_fragment?_path=_format%3Dhtml%26_locale%3Den%26_controller%3DBloggerBlogBundle%253APage%253Asidebar,1413997692,d71ced
+d71ced,127.0.0.1,GET,http://symblog.local/app_dev.php/blogger/,1413997692,

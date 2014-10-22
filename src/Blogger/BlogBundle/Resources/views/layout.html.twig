@@ -1,8 +1,13 @@
 {% extends '::base.html.twig' %}
 {% block stylesheets %}
     {{ parent()}}
-    <link rel="stylesheet" href="{{ asset('bundles/bloggerblog/css/blog.css') }}" />
+    {% stylesheets 
+        '@BloggerBlogBundle/Resources/public/css/*'
+        output='css/blogger.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
 {% endblock %}
 {% block sidebar %}
-    Sidebar content 
+    {{ render(controller('BloggerBlogBundle:Page:sidebar')) }} 
 {% endblock %}

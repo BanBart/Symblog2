@@ -64,14 +64,20 @@ class __TwigTemplate_b5104e06fee9b15fca6c02a6dd6b06cafdd495b2887b4b066ff18cc78ba
         echo "</p>
         </div>
     </article>
-        <section class=\"comments\" id=\"comments\">
+    <section class=\"comments\" id=\"comments\">
         <section class=\"previous-comments\">
             <h3>Comments</h3>
             ";
         // line 20
-        $this->env->loadTemplate("BloggerBlogBundle:Comment:index.html.twig")->display(array_merge($context, array("comments" => (isset($context["comments"]) ? $context["comments"] : $this->getContext($context, "comments")))));
-        // line 21
-        echo "        </section>
+        echo twig_include($this->env, $context, "BloggerBlogBundle:Comment:index.html.twig", array("comments" => (isset($context["comments"]) ? $context["comments"] : $this->getContext($context, "comments"))));
+        echo "
+        </section>
+        <h3>Add Comment</h3>
+        ";
+        // line 23
+        echo $this->env->getExtension('http_kernel')->renderFragment($this->env->getExtension('http_kernel')->controller("BloggerBlogBundle:Comment:new", array("blog_id" => $this->getAttribute((isset($context["blog"]) ? $context["blog"] : $this->getContext($context, "blog")), "id", array()))));
+        // line 25
+        echo "
     </section>
     
 ";
@@ -89,6 +95,6 @@ class __TwigTemplate_b5104e06fee9b15fca6c02a6dd6b06cafdd495b2887b4b066ff18cc78ba
 
     public function getDebugInfo()
     {
-        return array (  74 => 21,  72 => 20,  63 => 14,  56 => 12,  52 => 11,  45 => 9,  40 => 6,  37 => 5,  29 => 3,);
+        return array (  80 => 25,  78 => 23,  72 => 20,  63 => 14,  56 => 12,  52 => 11,  45 => 9,  40 => 6,  37 => 5,  29 => 3,);
     }
 }

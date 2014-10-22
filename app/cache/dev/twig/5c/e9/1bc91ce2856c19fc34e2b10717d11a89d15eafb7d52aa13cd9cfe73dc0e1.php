@@ -46,7 +46,7 @@ class __TwigTemplate_5ce91bc91ce2856c19fc34e2b10717d11a89d15eafb7d52aa13cd9cfe73
             <header>
                 <h2><a href=\"";
             // line 10
-            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("BloggerBlogBundle_blog_show", array("id" => $this->getAttribute($context["blog"], "id", array()))), "html", null, true);
+            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("BloggerBlogBundle_blog_show", array("id" => $this->getAttribute($context["blog"], "id", array()), "slug" => $this->getAttribute($context["blog"], "slug", array()))), "html", null, true);
             echo "\">";
             echo twig_escape_filter($this->env, $this->getAttribute($context["blog"], "title", array()), "html", null, true);
             echo "</a></h2>
@@ -64,14 +64,19 @@ class __TwigTemplate_5ce91bc91ce2856c19fc34e2b10717d11a89d15eafb7d52aa13cd9cfe73
                 <p class=\"continue\">
                     <a href=\"";
             // line 17
-            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("BloggerBlogBundle_blog_show", array("id" => $this->getAttribute($context["blog"], "id", array()))), "html", null, true);
+            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("BloggerBlogBundle_blog_show", array("id" => $this->getAttribute($context["blog"], "id", array()), "slug" => $this->getAttribute($context["blog"], "slug", array()))), "html", null, true);
             echo "\">Continue reading...</a>
                 </p>
             </div>
                 
                 
             <footer class=\"meta\">
-                <p>Comments: -</p>
+                <p>Comments: <a href=\"";
+            // line 23
+            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("BloggerBlogBundle_blog_show", array("id" => $this->getAttribute($context["blog"], "id", array()), "slug" => $this->getAttribute($context["blog"], "slug", array()))), "html", null, true);
+            echo "#comments\">- ";
+            echo twig_escape_filter($this->env, twig_length_filter($this->env, $this->getAttribute($context["blog"], "comments", array())), "html", null, true);
+            echo "</a> </p>
                 <p>Posted by <span class=\"highlight\">";
             // line 24
             echo twig_escape_filter($this->env, $this->getAttribute($context["blog"], "author", array()), "html", null, true);
@@ -111,6 +116,6 @@ class __TwigTemplate_5ce91bc91ce2856c19fc34e2b10717d11a89d15eafb7d52aa13cd9cfe73
 
     public function getDebugInfo()
     {
-        return array (  94 => 31,  83 => 25,  77 => 24,  67 => 17,  62 => 15,  57 => 13,  49 => 10,  41 => 7,  37 => 5,  31 => 4,  28 => 3,);
+        return array (  99 => 31,  88 => 25,  82 => 24,  76 => 23,  67 => 17,  62 => 15,  57 => 13,  49 => 10,  41 => 7,  37 => 5,  31 => 4,  28 => 3,);
     }
 }

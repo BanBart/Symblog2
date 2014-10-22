@@ -24,6 +24,8 @@ Blogger\BlogBundle\Entity\Blog:
             type: datetime
         updated_at:
             type: datetime
+        slug:
+            type: string
             
     oneToMany:
         comments:
@@ -32,6 +34,6 @@ Blogger\BlogBundle\Entity\Blog:
             
             
     lifecycleCallbacks:
-        prePersist: [setCreatedAtValue]
+        prePersist: [setCreatedAtValue, setSlugValue]
         preUpdate: [setUpdatedAtValue]
         

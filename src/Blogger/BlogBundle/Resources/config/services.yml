@@ -6,3 +6,7 @@ services:
         class: Blogger\BlogBundle\Form\EnquiryType
         tags: 
             - { name: form.type, alias: enquiry }
+    blogger_blog.twig.extension:
+        class: Blogger\BlogBundle\Twig\Extensions\BloggerBlogExtension
+        tags:
+            - { name: twig.extension }
